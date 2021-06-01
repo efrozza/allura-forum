@@ -2,14 +2,17 @@ package br.com.allura.forum.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.allura.forum.controller.dto.DetalhesTopicoDto;
 import br.com.allura.forum.controller.dto.TopicoDto;
+import br.com.allura.forum.controller.form.AtualizacaoTopicoForm;
 import br.com.allura.forum.controller.form.TopicoForm;
 import br.com.allura.forum.modelo.Topico;
 import br.com.allura.forum.repository.CursoRepository;
@@ -28,7 +32,7 @@ public class TopicosController {
 
 	@Autowired
 	private TopicoRepository topicoRepository;
-	
+
 	@Autowired
 	private CursoRepository cursoRepository;
 
@@ -45,27 +49,48 @@ public class TopicosController {
 		}
 
 	}
-	
-	//@Valid chama as validações que foram anotadas no TopicoForm
-	//@RequestBody informa que os dados vem no corpo da requisição
-	//o springBoot usa o Jackson para converter
+
+	// @Valid chama as validações que foram anotadas no TopicoForm
+	// @RequestBody informa que os dados vem no corpo da requisição
+	// o springBoot usa o Jackson para converter
 
 	@PostMapping
 	public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
 		Topico topico = form.converter(cursoRepository);
 		topicoRepository.save(topico);
-		
+
 		URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
 		return ResponseEntity.created(uri).body(new TopicoDto(topico));
 	}
-	
-	//entre chaves define dinamicidade
-	//@PathVariable define que eh um pathParam que vira diretamente na url
+
+	// entre chaves define dinamicidade
+	// @PathVariable define que eh um pathParam que vira diretamente na url
 	@GetMapping("/{id}")
-	public DetalhesTopicoDto detalhar(@PathVariable Long id) {
+	public ResponseEntity<DetalhesTopicoDto> detalhar(@PathVariable Long id) {
+
+		Optional<Topico> topico = topicoRepository.findById(id);
 		
-		Topico topico = topicoRepository.getOne(id);
-		return new DetalhesTopicoDto();
+		if  (topico.isPresent()) {
+			return ResponseEntity.ok(new DetalhesTopicoDto(topico.get()));
+		}
+		
+		return ResponseEntity.notFound().build();
+
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<TopicoDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form) {
+
+		Topico topico = form.atualizar(id, topicoRepository);
+		return ResponseEntity.ok(new TopicoDto(topico));
+
+	}
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> remover (@PathVariable Long id){
+		
+		topicoRepository.deleteById(id);
+		return ResponseEntity.ok().build();
 		
 	}
 

@@ -82,13 +82,8 @@
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
 				<version>1.10.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compileTests</goal>
-						</goals>
-					</execution>
-				</executions>
+	
+
 			</plugin>
 
 		</plugins>
