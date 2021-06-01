@@ -1,0 +1,17 @@
+package br.com.allura.forum.config.validacao;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class ErroDeValidacaoHandler {
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public void handle(MethodArgumentNotValidException exception) {
+		
+		//exception.
+		
+	}
+
+}
