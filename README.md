@@ -11,6 +11,7 @@
 @GetMapping - Mapeia método (usando GET)
 
 -- Tratamento de um método Post
+
 @PostMapping - Mapeia método (usando POST)
 
 @RequestBody - Indica que o valor da requisição vem no corpo
@@ -28,5 +29,6 @@ Validações feitas com Bean Validation na classe TopicoForm ------------**
   @Length(min = 5, max = 100)
   
   private String titulo;
+  
 ------------------------------------------------------------------------**
 
