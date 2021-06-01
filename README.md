@@ -3,7 +3,9 @@
 **Controller**
 
 @RestController - indica ao SB que é um controler Rest
+
 @RequestMapping("/topicos") - url que esse Controller mapeia (localmente seria - localhost:8080/topicos)
+
 @Autowired - Injeção de dependência
 
 @GetMapping - Mapeia método (usando GET)
@@ -18,9 +20,13 @@
 TopicoForm - Objeto recebido na requisição
 
 Validações feitas com Bean Validation na classe TopicoForm ------------**
+
   @NotNull
+  
   @NotEmpty
+  
   @Length(min = 5, max = 100)
+  
   private String titulo;
 ------------------------------------------------------------------------**
 
