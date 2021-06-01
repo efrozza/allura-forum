@@ -33,10 +33,12 @@ Validações feitas com Bean Validation na classe TopicoForm ------------**
 ------------------------------------------------------------------------**
 
 **Tratamento de erro**
+
 Classe anotada como @RestControllerAdvice será o interceptador de erros
 em controller.
 
 define o status do erro gerado
+
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 
 Seta qual tipo de erro será interceptado
